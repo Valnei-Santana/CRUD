@@ -1,5 +1,7 @@
 <?php
 include_once './conexao.php';
+//Set linguagem PT
+setlocale(LC_TIME, 'pt');
 
 class Principal {
 	public $conn;
@@ -9,10 +11,23 @@ class Principal {
 	}
 	
 	function addAtividade($titulo, $desc, $tipo) {
-		//Condicional: SE for sexta-feira e o horario maior igual a 13:00 retornar FALSE.
+	// Variaveis data atual e horario atual
+	 $data = date('d-m-Y', time());
+     $diaSemana = strftime("%A", strtotime($data));
+	 $horario = date('Hi', time());
+	 
+	 //Condicional: SE for tipo 4 E sexta-feira E o horario maior que a 13:00 definir state FALSE.
+	 if($tipo == 4 && $diaSemana == 'sexta-feira' && $horario > 1300) {
 		
-		//Querys para adicionar a database e retornar true
-		
+		$result = ["state" => 'false'];
+	 
+	 } else {
+		  
+		  //Querys para adicionar a database e definir state true
+		  
+		$result = ["state" => 'true'];
+	 }
+		return json_encode($result);
 	}
 	
 	function listAtividade($tipo) {
@@ -25,24 +40,62 @@ class Principal {
 	}
 	
 	function editAtividade($id, $titulo, $desc, $tipo) {
+
+	 // Variaveis data atual e horario atual
+	 $data = date('d-m-Y', time());
+     $diaSemana = strftime("%A", strtotime($data));
+	 $horario = date('Hi', time());
+	 
+	 //Condicional: SE for tipo 4 E sexta-feira E o horario maior que a 13:00 definir state FALSE.
+	 if($tipo == 4 && $diaSemana == 'sexta-feira' && $horario > 1300) {
 		
-		//Condicional: SE for sexta-feira e o horario maior igual a 13:00 retornar FALSE.
+		$result = ["state" => 'false'];
+	 
+	 } else {
 		
-		//Query para editar a atividade de ID correspondente ao passado, ao finalizar retornar TRUE
+		//Query para editar a atividade de ID correspondente ao passado, ao finalizar definir state TRUE  
+		$result = ["state" => 'true'];
+		
+	 }
+		return json_encode($result);
 		
 	}
 	
 	function removeAtividade($id) {
+		//Query para puxar informações do ID solicitado $tipo é definido através dessa consulta
 		
-		//Condicional: SE atividade for tipo 4 retornar FALSE.
+		//Condicional: SE atividade for tipo 4 definir stete FALSE.
+		if($tipo == 4) {
 		
-		//Query para remover a atividade de ID correspondente ao passado, ao finalizar retornar TRUE
+		$result = ["state" => 'false'];
+	 
+		} else {
+		
+		//Query para remover atividade do ID solicitado e definir state TRUE  
+		$result = ["state" => 'true'];
+		
+		}
+		
+		return json_encode($result);
 		
 	}
 	
 	function fimAtividade($id) {
-		//Condicional: SE descrição for menor que 50 caracteres retornar FALSE
+		//Query para puxar informações do ID solicitado $desc é definido através dessa consulta
 		
+		//Condicional: SE descrição for menor que 50 caracteres retornar FALSE
+		if(strlen($desc) < 50) {
+		
+		$result = ["state" => 'false'];
+	 
+		} else {
+		
+		//Query para remover atividade do ID solicitado e definir state TRUE  
+		$result = ["state" => 'true'];
+		
+		}
+		
+		return json_encode($result);
 		//Query para finalizar uma atividade, ao finalizar retornar TRUE
 		
 	}

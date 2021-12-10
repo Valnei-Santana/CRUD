@@ -5,9 +5,9 @@ class Conexao {
    
    function connect(){
 	$servername = "localhost";
-	$database = "----";
-	$username = "----";
-	$password = "----";
+   $database = "valiria";
+   $username = "root";
+   $password = "l^O3KXFsC#wW";
 	$conn = mysqli_connect($servername, $username, $password, $database);
 	return $conn;
    }
