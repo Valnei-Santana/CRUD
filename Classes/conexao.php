@@ -1,15 +1,8 @@
 <?php
-class Conexao {
-	
-	public $conn;
-   
-   function connect(){
+//Conexão banco de dados, classe removida por exceder tempo de conexão quando instanciada
 	$servername = "localhost";
-   $database = "valiria";
-   $username = "root";
-   $password = "l^O3KXFsC#wW";
+	$database = "project";
+	$username = "root";
+	$password = "l^O3KXFsC#wW";
 	$conn = mysqli_connect($servername, $username, $password, $database);
-	return $conn;
-   }
-}
    ?>

@@ -1,30 +1,55 @@
 <?php
-include_once './conexao.php';
+// Inclusão da conexão MySQL
+require_once('conexao.php');
 //Set linguagem PT
 setlocale(LC_TIME, 'pt');
 
+// Set timezone SP
+date_default_timezone_set('America/Sao_Paulo');
+
+// Variaveis data atual e horario atual que serão usadas
+$data = date('d-m-Y', time());
+$diaSemana = strftime("%A", strtotime($data)); // %A = dia da semana
+$horario = date('Hi', time()); // H = Horario | i = minuto
+
 class Principal {
-	public $conn;
 	
-	function Login($email, $senha) {
-		//Querys para checar se email e senha confere, SE sim retornar TRUE caso contrario FALSE
+	public function Login($email, $senha) {
+		// Variavel global de conexao
+		global $conn;
+		
+		//Query verificação email e senha
+		$stmt = $conn->prepare("SELECT * FROM usuario WHERE email = ? AND senha = ?"); // Prepara consulta
+		$stmt->bind_param('ss', $email, $senha); // Insere os parametros em '?', respectivamente
+		$stmt->execute();
+		$stmt->store_result();
+		$row_cnt = $stmt->num_rows; // Numero de linhas encontradas na consulta (banco)
+		if($row_cnt > 0) { // Se possuir registro continua e retorna TRUE, caso contrario FALSE
+			session_start(); // Inicia uma sessão
+			$_SESSION['email'] = $email; // Cria sessão email com e-mail do usuario
+			$_SESSION['senha'] = $senha; // Cria sessão com a senha do usuário (sha1)
+			$result = ["state" => 'true'];
+		} else {
+			$result = ["state" => 'false'];
+		}
+		return json_encode($result);
 	}
 	
+	
 	function addAtividade($titulo, $desc, $tipo) {
-	// Variaveis data atual e horario atual
-	 $data = date('d-m-Y', time());
-     $diaSemana = strftime("%A", strtotime($data));
-	 $horario = date('Hi', time());
-	 
-	 //Condicional: SE for tipo 4 E sexta-feira E o horario maior que a 13:00 definir state FALSE.
+	 global $conn;
+	 global $diaSemana;
+	 global $horario;
+	 //Condicional: SE for tipo 4 (Manutenção urgente) E sexta-feira E o horario maior que a 13:00 definir state FALSE.
 	 if($tipo == 4 && $diaSemana == 'sexta-feira' && $horario > 1300) {
 		
 		$result = ["state" => 'false'];
 	 
 	 } else {
-		  
-		  //Querys para adicionar a database e definir state true
-		  
+		//Query para adicionar a database e definir state true
+		$stmt = $conn->prepare("INSERT INTO `atividades` (`id`, `titulo`, `desc`, `tipo`) VALUES (NULL, ?, ?, ?)"); // Prepara consulta
+		$stmt->bind_param('ssi', $titulo, $desc, $tipo); // Insere os parametros em '?', respectivamente
+		$stmt->execute(); // Executa consulta
 		$result = ["state" => 'true'];
 	 }
 		return json_encode($result);
@@ -37,14 +62,10 @@ class Principal {
 		//Tipo 1: Desenvolvimento | Tipo 2: Atendimento | Tipo 3: Manutenção | Tipo 4: Manutenção urgente | Tipo 5: Concluída 
 		
 		//Querys para adicionar a database e retornar true
+		return 'a';
 	}
 	
 	function editAtividade($id, $titulo, $desc, $tipo) {
-
-	 // Variaveis data atual e horario atual
-	 $data = date('d-m-Y', time());
-     $diaSemana = strftime("%A", strtotime($data));
-	 $horario = date('Hi', time());
 	 
 	 //Condicional: SE for tipo 4 E sexta-feira E o horario maior que a 13:00 definir state FALSE.
 	 if($tipo == 4 && $diaSemana == 'sexta-feira' && $horario > 1300) {
@@ -100,4 +121,5 @@ class Principal {
 		
 	}
 }
+
 ?>

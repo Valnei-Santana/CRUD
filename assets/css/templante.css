@@ -1,0 +1,85 @@
+	  body {
+	  background: #fafafa;
+	  font-family: "Ubuntu", sans-serif;
+
+	  }
+.bg-all {
+	background-color: #f8f9fa!important;
+    box-shadow: 0px 2px 7px #99999982;
+}
+.nav-link {
+    color: #686868;
+    b
+    padding: 0.1rem 2rem 0.1rem 2rem;
+    border-radius: 7px;
+    font-size: 15px;
+    margin: 0.5rem;
+}
+.nav-link:hover{
+color: #686868;
+}
+.ct-layout {
+padding:1.5rem;
+padding-left:2rem;
+padding-top:.5rem;
+}
+nav ul li:hover > ul {
+  display: block;
+}
+.dropdown-menu {
+
+  
+    margin-top: 0px;
+	border-radius: 7px;
+}
+.dropdown-menu::after {
+content: '';
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 15px;
+    border-color: transparent transparent #ffffff transparent;
+    top: -0.9rem;
+    left: 1rem;
+
+}
+	.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #f3a865;
+    border-color: #f39d51;
+}
+.pl-0 {
+  padding-left: 0 !important;
+}
+.list-group-item-action.active::after{
+    content: '';
+    position: absolute;
+    left: 100%;
+    width: 0;
+    height: 0;
+  border-style: solid;
+border-width: 15px 0 15px 20px;
+border-color: transparent transparent transparent #f3a865;
+    clear: both;
+}
+.formTab {
+  display: none;
+}
+#msform fieldset:not(:first-of-type) {
+    display: none
+}
+.graf{
+background: url(./assets/images/grafismo.png) no-repeat;
+    width: 43px;
+    height: 29px;
+    border-right: 1px solid #bbbbbb9c;
+    margin-right: 0.5rem;
+	}
+	.nav-link .active {
+	border: 2px solid #f3a865;
+    border-radius: 9px;
+    color: #f3a865;
+	}
