@@ -48,4 +48,4 @@ include 'Includes/header.php'; //Include header, cabeçalho HTML
             </div>
          </div>
       </div>
-<?php include 'Includes/footer.php'; //Include FOOTER da página?>
+<?php include 'Includes/footer.php'; //Include FOOTER da página ?>

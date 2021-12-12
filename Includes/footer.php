@@ -76,6 +76,17 @@
       <?php if($pageid == 1){ ?>
 	  <script src="assets/js/index.js?2"></script>
 	  <?php } ?>
+	  <?php if($pageid == 2){ ?>
+	  <script src="assets/plugins/jsgrid/jsgrid.min.js"></script>
+	  <script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+	  <script src="assets/js/templante.js?<?php echo time();?>"></script>
+	  <script>
+	   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+	   </script>
+	  <?php } ?>
       <!-- Option 2: Separate Popper and Bootstrap JS -->
       <!--
          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
