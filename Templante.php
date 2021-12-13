@@ -83,7 +83,29 @@ include 'Includes/header.php'; //Include header, cabeçalho HTML
         <h5 class="modal-title" id="exampleModalLabel">Adicionar atividade</h5>
       </div>
       <div id="form-edit" class="modal-body">
-	
+	<div class="form-group">
+		<label for="titulo-add">Título</label>
+ <input id="titulo-edit" class="form-control" value="" type="text" placeholder="Titulo">
+  </div>
+   <div class="form-group">
+		<label for="titulo-add">Tipo</label>
+ <select id="tipo-edit" class="form-control">
+ <option value="" id="default-tipo"></option>
+  <option value="1">Desenvolvimento</option>
+  <option value="2">Atendimento</option>
+  <option value="3">Manutenção</option>
+  <option value="4">Manutenção urgente</option>
+</select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Descrição</label>
+    <textarea id="desc-edit" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+   </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button id="editButton" type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
+      </div>
      
     </div>
   </div>

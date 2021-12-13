@@ -1,3 +1,4 @@
+// Inicia o framework de Toast's (que exibe mensagens de erro/success)
 var Toast = Swal.mixin({
 		toast: true,
 		position: 'top-end',
@@ -5,9 +6,7 @@ var Toast = Swal.mixin({
 		timer: 9000
 });
 
-var gmodal = new bootstrap.Modal(document.getElementById('modalEdit'), {
-  keyboard: false
-});
+// Ao iniciar a página carregar a lista de atividades abertas
 $(document).ready(function() {
     getAtividade(0, 'atvd-list'); // Tipo 0 retorna a lista de atividades abertas
 });
@@ -22,11 +21,12 @@ $("#list-ativ-list").click(function() {
 	getAtividade(5, 'fechadas-list'); // Qualquer tipo diferente de 0 retorna atividades fechadas
 });
 
+// Ao clicar em Adicionar (dentro do Modal)
 $("#addAtividade").click(function() {
 	acao.adicionar(); // Adicionar atividade
 });
 
-//Função para imprimir a lista de atividades usando jsGrid. Tipo refere-se ao tipo de atividade, ID refere-se ao #id no qual a tabela será imprimida no HTML
+//Função para imprimir a lista de atividades usando jsGrid. Tipo refere-se ao tipo de atividade (Igual a 0 = Abertas | Diferente de 0 = Concluídas), ID refere-se ao #id no qual a tabela será imprimida no HTML
 function getAtividade(tipo, id) {
 $.ajax({
     type: "POST",
@@ -81,13 +81,13 @@ $.ajax({
                     title: "Tipo",
                     name: "tipo",
                     type: "text",
-                    width: "10%"
+                    width: "20%"
                 },
                 {
                     title: "Ação",
                     name: "acao",
                     type: "text",
-                    width: "8%",
+                    width: "10%",
                     css: "text-center"
                 }               
 
@@ -95,6 +95,7 @@ $.ajax({
 
             ]
         });
+		// Efeito de mudança na tabela (visual)
         $('#' + id ).animate({
             opacity: 0.5
         }, 500);
@@ -107,6 +108,7 @@ $.ajax({
 
 // Ações que serão realizadas
 acao = {
+	//Metodo que retorna as informações da atividade que será editada no MODAL, (Titulo, Tipo e Descrição)
     editar: function(id) {
 
         $.ajax({
@@ -116,11 +118,16 @@ acao = {
                 'id': id
             },
             success: function(data) {
-                $('#form-edit').html(data.body);
+                $('#titulo-edit').val(data.titulo);
+			 $('#desc-edit').val(data.desc);
+			$('#default-tipo').val(data.tipo);
+			$('#default-tipo').html(data.tipoName);
+			$('#editButton').attr('onClick', 'acao.salvar('+ id +');');
             }
         });
 
     },
+	//Metodo que conclui uma atividade, recebe ID como parametro.
     fim: function(id) {
 
         $.ajax({
@@ -132,11 +139,12 @@ acao = {
             success: function(data) {
                 if (data.state == 'true') {
 					getAtividade(0, 'atvd-list');
+					getAtividade(5, 'fechadas-list');
                     $(function() {
 
                         Toast.fire({
                             icon: 'success',
-                            title: ' Atividade finalizada com sucesso!'
+                            title: data.message
                         })
                     });
 
@@ -145,7 +153,7 @@ acao = {
 
                         Toast.fire({
                             icon: 'error',
-                            title: ' A atividade deve possuir descrição maior que 50 caracteres!'
+                            title: data.message
                         })
                     });
                 }
@@ -153,6 +161,7 @@ acao = {
         });
 
     },
+	//Metodo que deleta uma atividade, recebe ID como parametro.
     deletar: function(id) {
 
         $.ajax({
@@ -167,7 +176,7 @@ acao = {
                     $(function() {
                         Toast.fire({
                             icon: 'success',
-                            title: ' Atividade deletada com sucesso!!'
+                            title: data.message
                         })
                     });
 
@@ -175,7 +184,7 @@ acao = {
 					$(function() {
                         Toast.fire({
                             icon: 'error',
-                            title: ' Você não pode deletar atividades do tipo Manutenção Urgente!'
+                            title: data.message
                         })
                     });
 				}
@@ -183,7 +192,7 @@ acao = {
         });
 
     },
-
+    //Metodo que salva as alterações de uma atividade editada, (é chamada no botão 'Salvar' dentro do MODAL EDITAR)
     salvar: function(id) {
        var titulo = $('#titulo-edit').val();
         var desc = $('#desc-edit').val();
@@ -205,7 +214,7 @@ acao = {
 
                         Toast.fire({
                             icon: 'error',
-                            title: 'Este link está sendo usado!!'
+                            title: data.message
                         })
                     });
 
@@ -215,7 +224,7 @@ acao = {
 
                         Toast.fire({
                             icon: 'success',
-                            title: 'Atividade editada com sucesso!'
+                            title: data.message
                         })
                     });
                    
@@ -225,7 +234,7 @@ acao = {
         });
 
     },
-
+	//Metodo que cria uma atividade, (é chamada no botão 'Salvar' dentro do MODAL ADICIONAR)
     adicionar: function() {
         var titulo = $('#titulo-add').val();
         var desc = $('#desc-add').val();
@@ -245,7 +254,7 @@ acao = {
 
                         Toast.fire({
                             icon: 'error',
-                            title: 'Você não pode adicionar esse tipo de atividade nas sextas-feiras depois das 13:00!'
+                            title: data.message
                         })
                     });
 
@@ -255,7 +264,7 @@ acao = {
 
                         Toast.fire({
                             icon: 'success',
-                            title: 'Atividade adicionada com sucesso!'
+                            title: data.message
                         })
                     });
                     $('input').val("");

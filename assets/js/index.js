@@ -1,3 +1,4 @@
+ //Função login, envia informações digitas no campo e-mail e senha para o main callBack, onde faz as comparações e retorna true ou false e a mensagem de erro.
  function login() {
 		   var email = $('#id_email').val();
 		   var senha = $('#id_senha').val();
@@ -15,16 +16,16 @@
 				$("#alerta").removeClass("alert-danger");
 				
                $("#alerta").addClass("alert-success show");
-			   $("#messageErro").html("<strong>Sucesso!</strong> Você será redirecionado em alguns instantes...");
+			   $("#messageErro").html(data.message);
 			   
-			   location.href = 'templante.php';
+			   location.href = 'templante.php'; // Redireciona para a página de usuários logados (protegida por SESSION)
 
             } else if (data.state == 'false') {
 				if($("#alerta").hasClass("alert-success"))
 				$("#alerta").removeClass("alert-success");
 				
 				$("#alerta").addClass("alert-danger show");
-			   $("#messageErro").html("<strong>Erro!</strong> E-mail ou senha não conferem");
+			   $("#messageErro").html(data.message);
             } else {
                 $(function() {
 				console.log('error');
@@ -34,7 +35,7 @@
         }
     });
 }  
-  //Function hide/show password input
+  //Função exibir/ocultar senha (input password)
   const togglePassword = document.querySelector('#togglePassword');
   const password = document.querySelector('#id_password');
  
