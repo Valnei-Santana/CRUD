@@ -1,9 +1,9 @@
 # CRUD
 **Gerenciador de atividades PHP 7.1**<br><br>
-*Pendências*: <br>
+*Pendências*: (Finalzado)<br>
 Reformular como as informações são retornadas no metodo 'getAtividade';<br>
-Limitar caracteres da descrição na lista de atividades.<br>
-Documentar códigos em js explicando as desisões tomadas.<br><br>
+Limitar caracteres da descrição na lista de atividades;<br>
+Documentar códigos em js explicando as desisões tomadas;<br><br>
 
 *Funções possiveis*: (Finalizado)<br> 
 Possibilidade de adicionar novas atividades contendo um título, descrição e tipo;<br>
