@@ -78,6 +78,8 @@
    			if($row['tipo'] == 3) { $tipo = 'Manutenção';} else
    			if($row['tipo'] == 4) { $tipo = 'Manutenção urgente';} else
    			{ $tipo = 'Concluída';}
+			
+			//Se concluida for 0 (aberta) exibe 3 botões (Concluir, Editar e Deletar), do contrário exibir apenas botão para reabrir atividade (para página de concluidas)
    			if($row['concluida'] == 0) { 
    			$botoes = '<div class="btn-group btn-group-sm"><a onclick="acao.fim('.$row['id'].');" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Fechar"><i class="fa fa-check"></i></a><a data-toggle="modal" data-target="#modalEdit" onclick="acao.editar('.$row['id'].');" class="btn btn-info"><i class="fa fa-edit"></i></a><a onclick="acao.deletar('.$row['id'].');" class="btn btn-danger"><i class="fa fa-trash"></i></a></div>';
    			} else {
@@ -117,6 +119,7 @@
    		$result = $stmt->get_result();
    		$row = $result->fetch_assoc();
    		
+		//Exibe os nomes dos tipos
    		if($row['tipo'] == 1) { $tipo = 'Desenvolvimento';} else
    		if($row['tipo'] == 2) { $tipo = 'Atendimento';} else
    		if($row['tipo'] == 3) { $tipo = 'Manutenção';} else
