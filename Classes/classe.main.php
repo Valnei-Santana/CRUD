@@ -57,7 +57,7 @@
    	
    	function listAtividade($tipo) {
    		global $conn;
-   		//Condicional: SE tipo for 0 as com concluida = 0 (abertas), caso contrario listar COM concluida = 1 (FECHADAS)
+   		//Condicional: SE tipo for = 0 listar COM concluida = 0 (abertas), caso contrario listar COM concluida = 1 (FECHADAS)
    		//Tipo 1: Desenvolvimento | Tipo 2: Atendimento | Tipo 3: Manutenção | Tipo 4: Manutenção urgente
    		if($tipo == 0){
    		$stmt = $conn->prepare("SELECT atv.*, tp.nome FROM atividade atv LEFT JOIN tiposatividade tp ON atv.tipo = tp.id WHERE atv.concluida = '0'"); // Prepara consulta
