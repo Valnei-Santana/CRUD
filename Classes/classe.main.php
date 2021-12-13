@@ -60,10 +60,10 @@
    		//Condicional: SE tipo for 0 as com concluida = 0 (abertas), caso contrario listar COM concluida = 1 (FECHADAS)
    		//Tipo 1: Desenvolvimento | Tipo 2: Atendimento | Tipo 3: Manutenção | Tipo 4: Manutenção urgente
    		if($tipo == 0){
-   		$stmt = $conn->prepare("SELECT * FROM atividade WHERE concluida = '0'"); // Prepara consulta
+   		$stmt = $conn->prepare("SELECT atv.*, tp.nome FROM atividade atv LEFT JOIN tiposatividade tp ON atv.tipo = tp.id WHERE atv.concluida = '0'"); // Prepara consulta
    		$stmt->execute();
    		} else {
-   		$stmt = $conn->prepare("SELECT * FROM atividade WHERE concluida = '1'"); // Prepara consulta
+   		$stmt = $conn->prepare("SELECT atv.*, tp.nome FROM atividade atv LEFT JOIN tiposatividade tp ON atv.tipo = tp.id WHERE atv.concluida = '1'"); // Prepara consulta
    		$stmt->execute();
    		}
    		$result = $stmt->get_result(); //Busco os resultados da consulta
@@ -73,18 +73,13 @@
            {
    			$tipo = '';
    			$idEdit = '"'.$row['id'].'"';
-   			if($row['tipo'] == 1) { $tipo = 'Desenvolvimento';} else
-   			if($row['tipo'] == 2) { $tipo = 'Atendimento';} else
-   			if($row['tipo'] == 3) { $tipo = 'Manutenção';} else
-   			if($row['tipo'] == 4) { $tipo = 'Manutenção urgente';} else
-   			{ $tipo = 'Concluída';}
 			
 			//Se concluida for 0 (aberta) exibe 3 botões (Concluir, Editar e Deletar), do contrário exibir apenas botão para reabrir atividade (para página de concluidas)
    			if($row['concluida'] == 0) { 
    			$botoes = '<div class="btn-group btn-group-sm"><a onclick="acao.fim('.$row['id'].');" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Fechar"><i class="fa fa-check"></i></a><a data-toggle="modal" data-target="#modalEdit" onclick="acao.editar('.$row['id'].');" class="btn btn-info"><i class="fa fa-edit"></i></a><a onclick="acao.deletar('.$row['id'].');" class="btn btn-danger"><i class="fa fa-trash"></i></a></div>';
    			} else {
    			$botoes = '<div class="btn-group btn-group-sm"><a onclick="acao.fim('.$row['id'].');" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir"><i class="fa fa-times"></i></a></div>'; }
-   			$lista[] = ["id" => $row['id'], "titulo" => $row['titulo'], "desc" => substr($row['desc'], 0, 20).'...', "tipo" => $tipo, "acao" => $botoes];
+   			$lista[] = ["id" => $row['id'], "titulo" => $row['titulo'], "desc" => substr($row['desc'], 0, 20).'...', "tipo" => $row['nome'], "acao" => $botoes];
    		}
    
    		return json_encode($lista);
@@ -113,19 +108,13 @@
    	
    	function getAtividade($id) {
    		global $conn;
-   		$stmt = $conn->prepare("SELECT * FROM atividade WHERE id = ? LIMIT 1"); // Prepara consulta
+   		$stmt = $conn->prepare("SELECT atv.*, tp.nome FROM atividade atv LEFT JOIN tiposatividade tp ON atv.tipo = tp.id WHERE atv.id = ? LIMIT 1"); // Prepara consulta
    		$stmt->bind_param('i', $id); // Insere os parametros em '?', respectivamente
    		$stmt->execute();
    		$result = $stmt->get_result();
    		$row = $result->fetch_assoc();
-   		
-		//Exibe os nomes dos tipos
-   		if($row['tipo'] == 1) { $tipo = 'Desenvolvimento';} else
-   		if($row['tipo'] == 2) { $tipo = 'Atendimento';} else
-   		if($row['tipo'] == 3) { $tipo = 'Manutenção';} else
-   		if($row['tipo'] == 4) { $tipo = 'Manutenção urgente';}
    	
-   	$atividade = ["state" => 'true', "titulo" => $row['titulo'], "tipoName" => $tipo, "tipo" => $row['tipo'], "desc" => $row['desc']];
+   	$atividade = ["state" => 'true', "titulo" => $row['titulo'], "tipoName" => $row['nome'], "tipo" => $row['tipo'], "desc" => $row['desc']];
    	return json_encode($atividade);
    	}
    	
